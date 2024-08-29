@@ -11,7 +11,10 @@ def cleanData(csvFile) :
 
             readThis = True
             batters = dict()
+            count = 0
             for line in reader :
+                # if count > 10 :
+                #     break
                 if readThis :
                     edited = list()
                     edited.append(float(line[0]))
@@ -19,11 +22,12 @@ def cleanData(csvFile) :
                     #First we need to handle runners on base, with zero runners on going to 0, and then the sum of runner values:
                     #1st base: 1, 2nd base: 2, 3rd base: 3
                     basesSum = 0
-                    if line[1] is not None :
+                    print(type(line[1]))
+                    if line[1] != '':
                         basesSum += 1
-                    if line[2] is not None :
+                    if line[2] != '' :
                         basesSum += 2
-                    if line[3] is not None :
+                    if line[3] != '' :
                         basesSum += 3
                     edited.append(basesSum)
 
@@ -39,7 +43,7 @@ def cleanData(csvFile) :
                     
                     edited.append(ops)
 
-                    if line[6] :
+                    if line[6] == "True" :
                         edited.append(0.0)
                     else :
                         edited.append(1.0)
@@ -49,6 +53,7 @@ def cleanData(csvFile) :
                     
                     print(edited)
                     writer.writerow(edited)
+                    # count += 1
 
                 readThis = not readThis
 
@@ -68,5 +73,5 @@ def createLabels(csvFile) :
                 readThis = not readThis
                     
 
-#cleanData('zackWheeler2024Pitches.csv')
-createLabels('zackWheeler2024Pitches.csv')
+cleanData('zackWheeler2024Pitches.csv')
+#createLabels('zackWheeler2024Pitches.csv')

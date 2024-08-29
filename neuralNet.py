@@ -1,54 +1,30 @@
-import os
-import torch
-from torch import nn
-import csv
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import RadiusNeighborsClassifier
 import numpy as np
-
-#First we need to convert the csv to a numpy array
-#Then convert the numpy array to a tensor
-data = np.genfromtxt('clean_data.csv', delimiter=',')
-x_data = torch.from_numpy(data)
+import pandas as pd
 
 
+def scale_column_to_range(column, new_min=0, new_max=10) :
+    old_min = column.min()
+    old_max = column.max()
+    scaled_column = (column - old_min) / (old_max - old_min) * (new_min + new_max) + new_min
+    return scaled_column
 
-device = (
-    "cuda"
-    if torch.cuda.is_available()
-    else "mps"
-    if torch.backends.mps.is_available()
-    else "cpu"
-)
-print(f"Using {device} device")
+#Using the clean data and labels csv files, we need to make the training variables
+labels_df = pd.read_csv("labels.csv")
+y = labels_df.values.flatten()
 
-class NeuralNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(11, 10),
-            nn.ReLU(),
-            nn.Linear(10, 10),
-            nn.ReLU(),
-            nn.Linear(10, 6),
-        )
-    
-    def forward(self, x):
-        logits = self.linear_relu_stack(x)
-        return logits
-    
-model = NeuralNetwork().to(device)
-print(model)
+data_df = pd.read_csv("clean_data.csv")
+scaled_df = scale_column_to_range(data_df)
+print(scaled_df.describe())
+X = scaled_df.values
 
-X = torch.rand(1, 11, device=device)
-logits = model(X)
-pred_probab = nn.Softmax(dim=1)(logits)
-y_pred = pred_probab.argmax(1)
-print(f"Predicted class: {y_pred}")
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+#Create the model and train it
+classifier = KNeighborsClassifier(n_neighbors = 100)
+classifier.fit(X_train, y_train)
+print(classifier.score(X_test, y_test))
 
-input_vector = torch.rand(11)
-print(input_vector.size())
-
-layer1 = nn.Linear(in_features=11, out_features=10)
-hidden1 = nn.Linear(x_data)
-print(hidden1.size())
 
