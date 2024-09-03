@@ -21,14 +21,14 @@ def cleanData(csvFile) :
 
                     #First we need to handle runners on base, with zero runners on going to 0, and then the sum of runner values:
                     #1st base: 1, 2nd base: 2, 3rd base: 3
-                    basesSum = 0
+                    basesSum = 0.0
                     print(type(line[1]))
                     if line[1] != '':
-                        basesSum += 1
+                        basesSum += 1.0
                     if line[2] != '' :
-                        basesSum += 2
+                        basesSum += 2.0
                     if line[3] != '' :
-                        basesSum += 3
+                        basesSum += 3.0
                     edited.append(basesSum)
 
                     edited.append(float(line[4]))

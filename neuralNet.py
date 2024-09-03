@@ -16,15 +16,13 @@ labels_df = pd.read_csv("labels.csv")
 y = labels_df.values.flatten()
 
 data_df = pd.read_csv("clean_data.csv")
-scaled_df = scale_column_to_range(data_df)
+scaled_df = data_df #scale_column_to_range(data_df)
 print(scaled_df.describe())
 X = scaled_df.values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 #Create the model and train it
-classifier = KNeighborsClassifier(n_neighbors = 100)
+classifier = KNeighborsClassifier(n_neighbors = 70)
 classifier.fit(X_train, y_train)
 print(classifier.score(X_test, y_test))
-
-
