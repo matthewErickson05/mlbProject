@@ -1,7 +1,7 @@
 import statsapi as mlb
 import csv
 
-#This file is meant to clean the data and return a new csv
+#This file is meant to clean and normalize the data and return a new csv which will be used in the model
 def cleanData(csvFile) :
     #Create readers and writers for the new and old data
     with open("clean_data.csv", 'w', newline='') as clean :
