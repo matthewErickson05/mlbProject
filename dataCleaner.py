@@ -8,6 +8,7 @@ def cleanData(csvFile) :
         with open(csvFile, 'r') as data :
             writer = csv.writer(clean)
             reader = csv.reader(data)
+            writer.writerow(["PitchCount", "RunnersOn", "ScoreDiff", "BattingAVG", "isBatterRighty", "balls", "strikes", "outs", "ratingLR", "ratingUD", "ratingFB"])
 
             readThis = True
             batters = dict()
